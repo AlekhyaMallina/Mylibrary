@@ -1,0 +1,38 @@
+@CHARSET "UTF-8";
+
+  .topnavContainer {
+  position: relative;
+  width: 100%;
+  z-index: 999;
+  background-color: #3181A3;
+  opacity: 0.98;
+  height: 50px;
+  margin-bottom: 10px;
+
+}
+.signup {
+	margin-top: 150px;
+   
+}
+
+body{
+	  background-color: #E2E8F0;
+	  
+}
+
+.panel{
+	background-color:#E2E8F0;
+	
+	color:#3181A3;
+}
+i{
+color:#3181A3;
+}
+input{
+height:30px;
+width:350px;
+}
+.message{
+margin-top: 60px;
+margin-bottom: 10px;
+}
