@@ -14,7 +14,27 @@
 </head>
 
 
+<script>
+var app = angular.module('myapp', ['UserValidation']);
 
+angular.module('UserValidation', []).directive('validPasswordC', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            
+              ctrl.$setValidity('noMatch', true);
+
+                attrs.$observe('validPasswordC', function (newVal) {
+                    if (newVal == 'true') {
+                        ctrl.$setValidity('noMatch', true);
+                    } else {
+                        ctrl.$setValidity('noMatch', false);
+                    }
+                });
+        }
+    }
+})
+</script>
 
 <body>
 <div ng-app="myapp">

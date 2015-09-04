@@ -122,7 +122,15 @@ angular.module('MyApp', []).controller('MainController', [ '$scope' ,function($s
 		};
 		
 		
+           /*            for generating Excel Sheet for Assigned bokks history           */
+           
+$scope.exportdata= function() {
 
+ var blob = new Blob([document.getElementById('exportable').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, "BooksList.xls");
+    };
 
 }]);
 
@@ -166,7 +174,66 @@ for(Cookie cookie : cookies){
        			<a href="library.jsp"><img id="topLogo" src="vedams.jpg" alt="Library" class="img-responsive"></a>
       		</div></div>
       		
-      	
+      		<!-- for displaying scrolling of newly added books from last one month -->
+     	<div class = "row">
+     		             <%
+     
+                            Class.forName("com.mysql.jdbc.Driver");
+	                        Connection con_n=DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb","root","root");
+	                        ResultSet rs_n;
+	                        PreparedStatement ps_n=con_n.prepareStatement("select * from List where status='N'");
+	                       
+		                      rs_n =ps_n.executeQuery();
+		                      if(!rs_n.next())
+		                      {
+		                   %>
+		                    	  <marquee>*** There Are No Newly added books from past one month ***</marquee>
+		                    	 
+		                    	  
+		                   <% }
+		                     
+		                      
+		                  else{
+		                
+                               ResultSet rs_nn=null;
+              
+          		               Calendar c2 = Calendar.getInstance();
+          	                   SimpleDateFormat DATE_FORMAT2 = new SimpleDateFormat("dd-MM-yyyy");
+          	                   c2.add(Calendar.DATE,-30);
+          	                   String date2 = DATE_FORMAT2.format(c2.getTime());
+          	        
+          	                    ResultSet rs_update = null;
+          	                    PreparedStatement ps_update=con_n.prepareStatement("SELECT * from List WHERE Date < ? ");
+          	                    ps_update.setString(1, date2);
+          	                    rs_update=ps_update.executeQuery();
+          	                    if(rs_update.next())
+          	                    {
+          	        	           PreparedStatement ps_addp=con_n.prepareStatement("UPDATE List SET status = 'P'  WHERE Date < ?"); 
+          	        	           ps_addp.setString(1, date2);
+          	 	       
+          	 	                     ps_addp.executeUpdate();
+          	                     }
+          	        
+                                PreparedStatement ps_nn=con_n.prepareStatement("select * from List where status='N'");
+                   
+                                 rs_nn =ps_nn.executeQuery();
+                   
+                                String scroll="*** Newly Added Books from past one month ***";
+                                
+                                
+                                while(rs_nn.next())
+                                {
+                            	    scroll=scroll+rs_nn.getString(1)+"***";
+                                }
+	                        %>
+	                     
+    			          <marquee><%= scroll %></marquee>
+    			          
+    			          
+    			          
+    			          <%} %>
+     		</div>
+     		
      		
      		
      		        <!-- For displaying Tabs in an aligned manner  -->
